@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<body>
+			<canvas id="meu_canvas" width=800 height=600 style="border:1px solid #000000";></canvas>
+			<script>
+			   var canvas = document.getElementById('meu_canvas');
+			   var contexto = canvas.getContext('2d');
+			   
+			   var xi = 0;
+			   var yi = 0;
+			   var x = 0;
+			   var y = canvas.height - 50;
+			   var estado = 0;
+			   
+			   var imagem = new Image();
+			   imagem.src='imagem/zombie.png';
+			   imagem.onload = function (){
+				 contexto.drawImage(imagem,0,0,32,49,
+										   x,y,32,49);
+			   }
+			   
+			   mexerZombie();
+			   
+			   function mexerZombie(){
+			   
+			   contexto.clearRect(0,0,canvas.width, canvas.height);
+			   //verifica o estado do sprite
+			   switch (estado){
+				  case 0: direita();break;
+				  case 1: subindo();break;
+				  case 2: esquerda();break;
+				  case 3: descendo();break;
+			   }
+			   //desenha o sprite
+			   contexto.drawImage(imagem,xi, yi, 32, 49, x, y, 32, 49);
+			   
+			   //atualiza o xrecorte da imagem
+			   xi = (xi + 32 == 128 ? 0 : xi + 32);
+			   
+			   //chamar o proximo ciclo da animação
+			   requestAnimationFrame(mexerZombie);
+			   }
+			   
+			   function direita(){
+			   yi = 100;
+			   x = x + 2;
+			   if(x + 32>= canvas.width){
+				  x = canvas.width - 32;
+				  estado = 1;
+			   }
+			   
+			   }
+			   function subindo(){
+			   yi = 150;
+			   y = y - 2;
+			   if(y <= 0 ){
+				  y = 1;
+				  estado = 2;
+			   }
+			   
+			   }
+			   function esquerda(){
+			   yi = 50;
+			   x = x - 2;
+			   if(x <= 0){
+				  x = 1;
+				  estado = 3;
+			   }
+			   
+			   }
+			   function descendo(){
+			   yi = 0;
+			   y = y + 2;
+			   if(y + 50>= canvas.height){
+				  y = canvas.height - 50;
+				  estado = 0;
+			   }
+			   
+			   }  
+			</script>
+		</body>
+	</head>
+</html>
