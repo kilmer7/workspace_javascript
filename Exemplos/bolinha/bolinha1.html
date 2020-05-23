@@ -1,0 +1,59 @@
+	<html>
+	<head>
+	<meta charset="UTF-8">
+	<title> BUGADO!!!</title>
+	</head>
+	<body>
+		<canvas id="meu_canvas" width=800 height=600 style="border:1px solid #000000";>
+		Atenção o seu navegador não suporta Html5!!!
+		</canvas>
+		
+		<script>
+		   var canvas = document.getElementById('meu_canvas');
+		   var ctx = canvas.getContext('2d');
+		   
+		   var raio = 15;
+		   var velocidade = 3;
+		   var posicao = [Math.random()*canvas.width ,Math.random()*canvas.height];
+		   var vetor = [1,1];
+		   
+		   
+        animacaoSimples();
+   
+		   function animacaoSimples(){
+		   
+			   tratarColisao();
+			   atualizarPosicoes();
+			   desenhar();
+			   window.requestAnimationFrame(animacaoSimples);
+   
+		   }
+		   
+		   function tratarColisao(){
+			   if(posicao[0]-raio < 0 || posicao[0]+raio > canvas.width)
+				  vetor[0] = vetor[0]* -1;
+			   if(posicao[1]-raio < 0 || posicao[1]+raio > canvas.height)
+				  vetor[1] = vetor[1]* -1;
+		   }
+		   
+		   
+		   function atualizarPosicoes(){
+			   posicao[0]= posicao[0] + velocidade*vetor[0];
+			   posicao[1]= posicao[1] + velocidade*vetor[1];
+		   
+		   }
+		   
+		   
+		   function desenhar(){
+			  ctx.clearRect(0,0,canvas.width, canvas.height);
+			  ctx.beginPath();
+			  ctx.arc(posicao[0], posicao[1], raio, 0, 2*Math.PI);
+			  ctx.fill();
+			  ctx.closePath();
+		   }
+		   
+		  
+</script>
+</body>
+
+</html>

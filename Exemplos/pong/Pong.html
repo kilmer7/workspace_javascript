@@ -1,0 +1,122 @@
+<html>
+	<head>
+	<meta charset="UTF-8">
+	<title> BUGADO!!!</title>
+	</head>
+	<body>
+		<canvas id="meu_canvas" width=800 height=600 style="border:1px solid #000000";>
+		Atenção o seu navegador não suporta Html5!!!
+		</canvas>
+		
+		<script>
+		   var canvas = document.getElementById('meu_canvas');
+		   var ctx = canvas.getContext('2d');
+		   
+		   var x = 0;
+		   var y = (canvas.height - 80)/2;
+		   var velocidadedeBloco = 10;
+		   
+		   var raio = 10;
+		   var xc = Math.random()*canvas.width;
+		   var yc = 0;
+		   var velocidadedeBola = 5;
+		   
+		   var placar = 0;
+		   var textoPlacar = placar;
+		   
+		   var  pressionada = [];
+		   
+		   animacaSimples();
+		   
+		   function animacaSimples(){
+		       trataInputs();
+			   atualizaPosicoes();
+			   desenhaItens();
+			   
+			   window.requestAnimationFrame(animacaSimples);
+		   
+		   }
+       
+	     // Funções de Apoio
+		 // Detecta tecla pressionada
+		 
+		 document.addEventListener('keydown', function(e){
+		    pressionada[e.keyCode] = true;
+		 });
+		 document.addEventListener('keyup', function(e){
+		    pressionada[e.keyCode] = false;
+		 });
+		 
+		 function trataInputs(){
+		 //Trata inputs
+		 if (pressionada[40]) cima();
+		 if (pressionada[38]) baixo();
+		 
+		 }
+		 function cima() {
+		 y -= velocidadedeBloco;
+		 
+		 }
+		 function baixo() {
+		 y += velocidadedeBloco;
+		 
+		 }
+		 
+		 function atualizaPosicoes(){
+		 //Atualiza posicionamento
+		 
+		 
+		 yc = (xc + raio >= canvas.width ? 0 : xc+velocidadedeBola);
+		 xc = (xc + raio >= canvas.height ? Math.random()*canvas.width : yc);
+		 
+		 //Trata Colisao
+		 
+		 if(trataColisao()){
+		    placar++;
+			textoPlacar = placar;
+			velocidadedeBola = (placar%7 == 0 ? velocidadedeBola + 2 : velocidadedeBola);
+			yc = 0;
+			xc = Math.random()*canvas.width;
+			
+		   }
+		 }
+		 
+		 function trataColisao(){
+		 //Detecta Colisao
+		 var colidiu = true;
+		 if(
+		   ((xc + raio) < x ||  xc > x + 60) ||
+		   ((yc + raio) < y || yc > y + 30)
+		 )	 {
+		 colidiu  = false;
+		 }
+		 return colidiu;
+		 }
+		 
+		 //Desenha itens na tela
+		 function desenhaItens(){
+		 //Limpa a tela
+		 ctx.clearRect(0,0, canvas.width, canvas.height);
+		 
+		 // desenha texto
+		 ctx.font="30px Arial";
+		 ctx.fillText(textoPlacar, canvas.width/2, 30);
+		 
+		 //desenha bloco
+		 ctx.fillStyle="rgb(0,55,180)";
+		 ctx.fillRect(5,y,15,80);
+		 
+		 ctx.fillStyle="rgb(255,0,55)";
+		 ctx.fillRect(canvas.width - 35, y, 15,80);
+		 
+		 //desenha bola
+		 ctx.beginPath();
+		 ctx.fillStyle="rgb(255,0,0)";
+		 ctx.arc(xc, yc, raio, 0, 2*Math.PI, false);
+		 ctx.fill();
+		 ctx.closePath();
+		 }
+</script>
+</body>
+
+</html>
