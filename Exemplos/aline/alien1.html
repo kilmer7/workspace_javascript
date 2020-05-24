@@ -1,0 +1,92 @@
+<DOCTYPE>
+<html>
+	<head>
+		<title>Jogo em O.O.</title>
+	</head>	
+		<body>
+		
+			<center>
+			<h2>TESTE DE JOGO</h2><br>
+				<canvas id="meu_canvas" width="650px" height="400px" 
+				  style="border:1px solid #000000;
+						 background: #ffffff"> 
+				ATENÇÃO SEU NAVEGADOR Ñ SUPORTA HTML 5 CAnvas.
+				</canvas>
+			</center>
+			
+				<script>
+				//variaveis gerais
+				var canvas = document.getElementById('meu_canvas');
+				var ctx = canvas.getContext('2d');
+				
+				//variaveis de controle
+				const NUM_CAMADAS = 3;
+				var fps = 12;
+				var inter = 1000/fps;
+				var img =[];
+				var k =[];
+				var velocidade = 5;
+				var x = 0;
+				var y = 0;
+					
+				k[1] = 0;	
+				img[1]= new Image();
+				img[1].src="imgs/espaco.png";
+				img[1].onload = function(){
+					ctx.drawImage(img[1], 0, 0, img[1].width, img[1].height);
+				}
+				
+				
+				k[2] = 0;
+				img[2] = new Image();
+				img[2].src = "imgs/asteroides.png";
+				img[2].onload = function(){
+					ctx.drawImage(img[2], 0, 0, 45, 48
+								, 150, 150, 45, 48);
+				}
+
+				k[3]= 0;
+				img[3] = new Image();
+				img[3].src="imgs/alien.png";
+				img[3].onload = function(){
+					ctx.drawImage(img[3], 0, 0, img[3].width, img[3].height);
+				}
+				
+				//nave();
+				rocha();
+				
+				/*function nave(){
+					
+						ctx.clearRect(0,0,canvas.width, canvas.height);
+						parallax();
+					
+					setTimeout(function(){requestAnimationFrame(nave);
+					}, inter);
+				}*/
+				
+				function rocha(){
+					ctx.clearRect(x,y,canvas.width, canvas.height);
+					//parallax();
+					desenhar();
+					setTimeout(function(){requestAnimationFrame(rocha);
+					}, inter);
+				}
+				
+				function desenhar(){
+					ctx.drawImage(img[1], 0, 0, img[1].width, img[1].height);
+					ctx.drawImage(img[2], 0, 0, 45, 48, 150, 150, 45, 48);
+					ctx.drawImage(img[3], 0, 0, img[3].width, img[3].height);
+				}
+				/*function parallax(){
+					ctx.drawImage(img[1], k[1], 0, img[1].width, img[1].height);	
+					for (var i=2; i <= NUM_CAMADAS; i++){
+						k[i] -= velocidade/((NUM_CAMADAS - i) + 1);
+						k[i] = (k[i] <= -(img[i].width) ? 0 : k[i]);
+						ctx.drawImage(img[i], k[i], 0, img[i].width, img[i].height);
+						ctx.drawImage(img[i], k[i]+img[i].width, 0, img[i].width, img[i].height);
+					}
+				}*/
+				</script>
+		
+		</body>
+</html>
