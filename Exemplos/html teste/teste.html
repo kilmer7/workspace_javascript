@@ -1,0 +1,74 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<title>Teste de Aprendizado</title>
+	</head>
+	
+		<body>
+		<center>
+		<canvas id="meu_canvas" width="800px" height="600px" style="background: #fff052">
+		Seu navegador não suporta o canvas!
+		</canvas>
+		</center>
+		
+			<script>
+			//canvas e contexto
+				var canvas = document.getElementById("meu_canvas");
+				var contexto = canvas.getContext("2d");
+				var estado = 0;
+				
+				var x = 0;
+				var y = canvas.height - 32;
+				var xi = 0;
+				var yi = 0;
+								
+			//carregamento da imagem
+				var imagem = new Image();
+				imagem.src = 'img/BolaSpriteAnimado.png';
+				imagem.onload = function(){
+					contexto.drawImage(imagem,200,200,160,32);
+				}
+				
+			//carregamento com corte especifico
+				var imagem2= new Image();
+				imagem2.src = 'img/BolaSpriteAnimado.png';
+				imagem2.onload = function(){
+					contexto.drawImage(imagem2,0,0,30,32
+						               ,250,250,30,32);
+									   
+				}					   
+			//carregamento de sprite sheet para movimentação da imagem...ou troca de imagem...
+				var imagem3= new Image();
+				imagem3.src = 'img/BolaSpriteAnimado.png';
+				imagem3.onload = function(){
+					contexto.drawImage(imagem3,0,0,30,32
+						               ,350,350,30,32);
+			
+				}
+			
+				function rolarBola(){
+					//limpar antes de desenhar
+					contexto.clearRect(0,0,canvas.width,canvas.height);
+					//desenha o sprite
+					contexto.drawImage(imagem3,xi,yi,30,32,x,350,30,32);
+					rolar();
+					//atualiza o recorte
+					xi = (xi + 30 == 160 ? 0 : xi + 30);
+					//chamar o proximo ciclo de animaçao
+					requestAnimationFrame(rolarBola);
+				};
+				
+				//funções de movimento
+					function rolar(){
+					yi = 0;
+					y = y + 30;
+					if(y + 30>= canvas.width){
+					y = 1;
+					
+					}
+					
+					}		
+				
+			</script>
+		</body>
+</html>

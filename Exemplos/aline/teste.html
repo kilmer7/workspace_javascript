@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head><title>PARALLAX</title></head>
+		<body>
+		
+			<center>
+				<h1>Ex-1 Aula 9 Parallax Scrolling</h1>
+					<canvas id="meu_canvas" width="600" height="350"
+							style="border:1px solid #000000;
+							background: #ffffff;">
+					</canvas>
+					<br/>
+				<!--<img id="botoes" src="img/play.png"
+					width="5%" height="5%" onclick="tratarClick()"/>-->
+			</center>
+
+				<script>
+				canvas = document.getElementById('meu_canvas');
+				context = canvas.getContext('2d');
+
+				var botao = document.getElementById('botoes');
+				var play = false;
+				
+				const NUM_CAMADAS = 4;
+				var fps = 12;
+				var intervalo = 1000/fps;
+				var velocidade = 5;
+				var img=[];
+				var x =[];
+				
+				
+				
+				x[2]= 0;
+				img[2] = new Image();
+				img[2].src="imgs/alien.png";
+				img[2].onload = function(){
+					context.drawImage(img[2], 0, 0, img[2].width, img[2].height);
+				}
+				x[1]= 0;
+				img[1] = new Image();
+				img[1].src="imgs/espaco.png";
+				img[1].onload = function(){
+					context.drawImage(img[1], 0, 0, img[1].width, img[1].height);
+				}
+				/*x[3]= 0;
+				img[3] = new Image();
+				img[3].src="img/imgs/grama.png";
+				img[3].onload = function(){
+					context.drawImage(img[3], 0, 0, img[3].width, img[3].height);
+				}
+				
+				x[4]= 0;
+				img[4] = new Image();
+				img[4].src="img/imgs/principal.png";
+				img[4].onload = function(){
+					context.drawImage(img[4], 0, 0, img[4].width, img[4].height);
+				}*/
+				
+				/*//iniciar a animação
+				loop();
+				
+				//função de animação
+				function loop(){
+					if (play) {
+						context.clearRect(0,0,canvas.width, canvas.height);
+						parallax();
+						
+					}
+					setTimeout(function(){requestAnimationFrame(loop);
+					}, intervalo);
+				}
+				
+				function parallax(){
+					context.drawImage(img[1], x[1], 0, img[1].width, img[1].height);	
+					for (var i=2; i <= NUM_CAMADAS; i++){
+						x[i] -= velocidade/((NUM_CAMADAS - i) + 1);
+						x[i] = (x[i] <= -(img[i].width) ? 0 : x[i]);
+						context.drawImage(img[i], x[i], 0, img[i].width, img[i].height);
+						context.drawImage(img[i], x[i]+img[i].width, 0, img[i].width, img[i].height);
+					}
+				}
+				
+				function tratarClick() {
+					if (play) botao.src = "img/play.png";
+					else botao.src = "img/pause.png";
+					play = !play;
+				
+				}*/
+				
+				</script>
+		</body>
+</html>

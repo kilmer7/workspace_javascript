@@ -1,0 +1,40 @@
+<DOCTYPE>
+<html>
+	<head>
+		<title>Teste de Jogo</title>
+	</head>	
+		<body>
+		
+			<center>
+			<h2>TESTE DE JOGO</h2><br>
+				<canvas id="meu_canvas" width="600px" height="400px" 
+				  style="border:1px solid #000000;
+						 background: #ffffff"> 
+				ATENÇÃO SEU NAVEGADOR Ñ SUPORTA HTML 5 CAnvas.
+				</canvas>
+
+				<script>
+				var canvas = document.getElementById('meu_canvas');
+				var contexto = canvas.getContext('2d');
+				canvas.addEventListener('mousedown', trataclick, false);
+				
+				function trataclick (evt){
+					var rect = canvas.getBoundingClientRect();
+					
+					desenhar(evt.x - rect.left, evt.y - rect.top);				
+				}
+				
+				function desenhar (x,y){
+					
+					contexto.fillStyle="#FF0000";
+					contexto.beginPath();
+					contexto.arc(x,y,5,0,2*Math.PI, false);
+					contexto.closePath();
+					contexto.fill();
+				}
+				
+				</script>
+			</center>
+		
+		</body>
+</html>

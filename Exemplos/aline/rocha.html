@@ -1,0 +1,28 @@
+<html>
+	<head>
+	<meta charset="UTF-8">
+	<title> BUGADO!!!</title>
+	</head>
+	<body>
+		<canvas id="meu_canvas" width=800 height=600 style="border:1px solid #000000";>
+		Atenção o seu navegador não suporta Html5!!!
+		</canvas>
+		
+		<script>
+		   
+		   var canvas = document.getElementById("meu_canvas");
+		   var ctx = canvas.getContext("2d");
+		   
+		   var x = canvas.width - 10;
+		   var y = 0;
+
+		   var img = new Image();
+		   img.src= "imgs/asteroides.png"
+		   img.onload= function (){
+				ctx.drawImage(img, 0, 0, 45, 48
+								, x, y, 45, 48)
+		   }
+		</script>
+</body>
+
+</html>
