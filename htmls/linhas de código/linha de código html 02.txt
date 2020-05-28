@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title> YANG ZING HUE :V </title>
+   </head>
+   <body>
+   
+      <h1> YANG ZING HUE :V </h1>
+	  <h3> Desenhando no Canvas </h3>
+	  <!--altura 400px--> <!--largura 600px-->
+	  <canvas id="meu_canvas" width="600px" height="400px" 
+	          style="border:1px solid #000000;
+	                 background: #ff00ff"> 
+	  ATENÇÃO SEU NAVEGADOR Ñ SUPORTA HTML 5 CAnvas.
+	  </canvas>
+      <!-- Este é um comenttário java -->
+	  <script>
+	  // comentário javascript
+	     var canvas = document.getElementById("meu_canvas");//nunca esquecer de refere^ciar
+		 var contexto = canvas.getContext("2d")//criando contexto 2d
+		 var x = 0;
+		 
+		 contexto.fillStyle = "rgb(0,162,232)";//PALHETA DE COR
+		 
+		 
+		 window.requestAnimationFrame(loopanimacao);
+		 
+		 function loopanimacao(){
+		    contexto.clearRect(0,0,canvas.width,canvas.height);
+		    contexto.fillRect(/*pos x*/x,/*pos y*/60,/*larg*/ 70+x, /*art*/100+x);// retangulo com preenchiumento 
+			x = (x >= canvas.width ? 0: x + 1);
+			window.requestAnimationFrame(loopanimacao);//é qm faz o looping...
+		 }
+	  </script>
+	  
+   </body>
+</html>

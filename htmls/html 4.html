@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title> DESAFIO HTML5 </title>
+   </head>
+   <body>
+   
+      <h1> HTML5 </h1>
+	  <h3> Desenhando no Canvas </h3>
+	  <!--altura 400px--> <!--largura 600px-->
+	  <canvas id="meu_canvas" width="300px" height="300px" </canvas>
+	  
+      <!-- Este é um comenttário java -->
+	  <script>
+	  // canvas e contexto
+	  var canvas = document.getElementById('meu_canvas');
+	  var contexto = canvas.getContext('2d');
+	  
+	  contexto.fillStyle = '#ffffff';
+	  contexto.strokeStyle = '#000000';
+	  contexto.lineWidth = 4;
+	  contexto.beginPath ();
+	  contexto.moveTo(75,250);//x,y
+	  contexto.lineTo(150,50);
+	  contexto.lineTo(225,250);
+	  contexto.lineTo(50,120);
+	  contexto.lineTo(250,120);
+	  contexto.lineTo(75,250);
+	  
+	  contexto.fill();
+	  contexto.stroke();
+	  contexto.closePath();
+	  </script>
+	  
+   </body>
+</html>

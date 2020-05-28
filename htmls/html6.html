@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title> DESAFIO HTML5 </title>
+   </head>
+   <body>
+   
+	  <!--altura 400px--> <!--largura 600px-->
+	  <canvas id="meu_canvas" width="700px" height="700px" </canvas>
+	  
+      <!-- Este é um comenttário java -->
+	  <script>
+	  // canvas e contexto
+	  var canvas = document.getElementById('meu_canvas');
+	  var contexto = canvas.getContext('2d');
+	  
+	  //texto
+	  //contexto.shadowOffsetX = 3;
+	  //contexto.shadowOffsetY = 4;
+	  //contexto.shadowBlur = 5;
+	  //contexto.shadowColor ="rgba(0,0,0,1)";
+	  
+	  contexto.font = '24px Times New Roman';
+	  contexto.fillText("Bom dia Alunos",30,30);
+	  
+	  //cara
+	  contexto.fillStyle = '#ffffff';
+	  contexto.strokeStyle = '#000000';
+	  contexto.lineWidth = 4;
+	  contexto.beginPath();
+	  contexto.arc(150,150,70,0,2*Math.PI,true);//x,y,radio,inicial,final,horario ou ñ
+	  contexto.fill();
+	  contexto.stroke();
+	  contexto.closePath();
+	  
+	  //sorriso
+	  
+	  contexto.fillStyle = '#ffffff';
+	  contexto.strokeStyle = '#000000';
+	  contexto.lineWidth = 4;
+	  contexto.beginPath();
+	  contexto.arc(150,150,50,0,1*Math.PI,false);//x,y,radio,inicial,final,horario ou ñ
+	  contexto.fill();
+	  contexto.stroke();
+	  contexto.closePath();
+	  
+	  //olho direito
+	  
+	  contexto.fillStyle = '#ffffff';
+	  contexto.strokeStyle = '#000000';
+	  contexto.lineWidth = 4;
+	  contexto.beginPath();
+	  contexto.arc(120,120,9,0,2*Math.PI,true);//x,y,radio,inicial,final,horario ou ñ
+	  contexto.fill();
+	  contexto.stroke();
+	  contexto.closePath();
+	  
+	  //olho esquerdo
+	  
+	  contexto.fillStyle = '#ffffff';
+	  contexto.strokeStyle = '#000000';
+	  contexto.lineWidth = 4;
+	  contexto.beginPath();
+	  contexto.arc(180,120,9,0,2*Math.PI,true);//x,y,radio,inicial,final,horario ou ñ
+	  contexto.fill();
+	  contexto.stroke();
+	  contexto.closePath();
+	  
+	  //tronco
+	  
+	  contexto.fillStyle = '#ffffff';
+	  contexto.strokeStyle = '#000000';
+	  contexto.lineWidth = 4;
+	  contexto.beginPath();
+	  contexto.moveTo(150,220);
+	  contexto.lineTo(150,400);
+	  contexto.fill();
+	  contexto.stroke();
+	  contexto.closePath();
+	  
+	  //braços
+	  
+	  contexto.fillStyle = '#ffffff';
+	  contexto.strokeStyle = '#000000';
+	  contexto.lineWidth = 4;
+	  contexto.beginPath();
+	  contexto.moveTo()
+	  contexto.fill();
+	  contexto.stroke();
+	  contexto.closePath();
+	  
+	  
+	  </script>
+	  
+   </body>
+</html>
