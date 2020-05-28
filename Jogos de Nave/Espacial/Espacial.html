@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="js/fundo.js"></script>
+        <script type="text/javascript" src="js/nave.js"></script>
+        <script type="text/javascript" src="js/astro.js"></script>
+        <script type="text/javascript" src="js/tiro.js"></script>
+        <script type="text/javascript" src="js/explosao.js"></script>
+        <script type="text/javascript" src="js/vida.js"></script>
+        <script type="text/javascript" src="js/escudo.js"></script>
+        <title>Espacial</title>
+    </head>
+    <body style = "background-color: #000000;">
+        <audio id = "musica" loop = "loop" preload = "auto">
+            <source src = "sg/StarTrek.mp3" type = "audio/mpeg" />
+        </audio>
+        <center>
+            <h4 style = "font-family: Tahoma, Geneva, sans-serif; color: yellow;">Use as setas de direção para se mover para os lados e Ctrl para atirar. Preparado (a)? Aperte "Play"!</h4>
+            <canvas id = "tela" width = "975" height = "600" style = "border: 1px solid #FFFF00;">Sem suporte a HTML5</canvas>
+            <br>
+            <button id = "botao" type = "button" onclick = "pausa ()"> Play </button>
+            <p style = "color: yellow;">Autor: Maury Lukas</p>
+            <script>
+                var canvas = document.getElementById ('tela');
+                var contexto = canvas.getContext ('2d');
+                var musica = document.getElementById ('musica');
+                
+                var fundo = new Fundo ();
+                fundo.sorteio ();
+                fundo.desenhar ();
+                
+                var nave = new Nave ();
+                nave.desenhar ();
+                
+                var quantidade = 1;
+                var indiceAstro = 0;
+                var astros = [];
+                for (indiceAstro = 0; indiceAstro < quantidade; indiceAstro ++)
+                {
+                    astros [indiceAstro] = new Astro();
+                }
+                
+                var indiceTiro = 0;
+                var tiros = [];
+                for (indiceTiro = 0; indiceTiro < 3; indiceTiro ++)
+                {
+                    tiros [indiceTiro] = new Tiro ();
+                }
+                
+                var explosoes = [];
+                for (indiceAstro = 0; indiceAstro < quantidade; indiceAstro ++)
+                {
+                    explosoes [indiceAstro] = new Explosao ();
+                }
+                
+                var coracao = 1;
+                var indiceVida = 0;
+                var vidas = [];
+                for (indiceVida = 0; indiceVida < coracao; indiceVida ++)
+                {
+                    vidas [indiceVida] = new Vida ();
+                }
+                
+                var circulo = 1;
+                var indiceEscudo = 0;
+                var escudos = [];
+                for (indiceEscudo = 0; indiceEscudo < circulo; indiceEscudo ++)
+                {
+                    escudos [indiceEscudo] = new Escudo ();
+                }
+                
+                var larguraOver = 384;
+                var alturaOver = 84;
+                var imagemOver = new Image ();
+                imagemOver.onload = function ()
+                {
+                    
+                };
+                imagemOver.src = 'img/Game_Over.png';
+                
+                document.addEventListener ('keydown', function (pressiona)
+                {
+                    if (pressiona.keyCode == 37)
+                    {
+                        nave.esquerda = true;
+                    }
+                    else if (pressiona.keyCode == 39)
+                    {
+                        nave.direita = true;
+                    }
+                    else if (pressiona.keyCode == 17)
+                    {
+                        nave.atira = true;
+                    }
+                });
+                
+                document.addEventListener ('keyup', function (solta)
+                {
+                    if (solta.keyCode == 37)
+                    {
+                        nave.esquerda = false;
+                    }
+                    else if (solta.keyCode == 39)
+                    {
+                        nave.direita = false;
+                    }
+                    else if (solta.keyCode == 17)
+                    {
+                        nave.atira = false;
+                    }
+                });
+                
+                var inicio = false;
+                var fim = false;
+                var z = 0;
+                var vida = 3;
+                var ponto = 0;
+                var anterior = 0;
+                var fonte = 20;
+                var espera = 20;
+                
+                contexto.font = '20px Arial';
+                contexto.fillStyle = 'yellow';
+                
+                requestAnimationFrame (jogo);
+                
+                function jogo ()
+                {
+                    if (inicio)
+                    {
+                        desenha ();
+                        
+                        teclado ();
+                        
+                        colide ();
+                        
+                        contexto.fillText ('Vida (s): ' + vida, z, fonte);
+                        contexto.fillText ('Ponto (s): ' + ponto, canvas.width - fonte * 6, fonte);
+                        
+                        if (fim)
+                        {
+                            para ();
+                        }
+                        else
+                        {
+                            prepara ();
+                            
+                            if (dificulta ())
+                            {
+                                astros [quantidade] = new Astro();
+                                explosoes [quantidade] = new Explosao ();
+                                quantidade ++;
+                            }
+                            
+                            if (nave.protecao)
+                            {
+                                nave.tempo ++;
+                                if (nave.tempo >= 2000)
+                                {
+                                    nave.protecao = false;
+                                }
+                            }
+                            espera ++;
+                            requestAnimationFrame (jogo);
+                        }
+                    }
+                }
+                
+                function desenha ()
+                {
+                    contexto.clearRect (z, z, canvas.width, canvas.height);
+                    fundo.proximo ();
+                    fundo.desenhar ();
+                    nave.desenhar ();
+                    for (indiceAstro = 0; indiceAstro < quantidade; indiceAstro ++)
+                    {
+                        astros [indiceAstro].desenhar();
+                    }
+                    for (indiceTiro = 0; indiceTiro < tiros.length; indiceTiro ++)
+                    {
+                        if (tiros [indiceTiro].tiro)
+                        {
+                            tiros [indiceTiro].desenhar ();
+                        }
+                    }
+                    for (indiceAstro = 0; indiceAstro < quantidade; indiceAstro ++)
+                    {
+                        if (explosoes [indiceAstro].explosao)
+                        {
+                            explosoes [indiceAstro].desenhar ();
+                        }
+                    }
+                    for (indiceVida = 0; indiceVida < coracao; indiceVida ++)
+                    {
+                        if (vidas [indiceVida].vida)
+                        {
+                            vidas [indiceVida].desenhar ();
+                        }
+                    }
+                    for (indiceEscudo = 0; indiceEscudo < circulo; indiceEscudo ++)
+                    {
+                        if (escudos [indiceEscudo].escudo)
+                        {
+                            escudos [indiceEscudo].desenhar ();
+                        }
+                    }
+                }
+                
+                function teclado ()
+                {
+                    if (nave.esquerda)
+                    {
+                        nave.paraEsquerda ();
+                    }
+                    if (nave.direita)
+                    {
+                        nave.paraDireita ();
+                    }
+                    if (nave.atira && espera >= 20)
+                    {
+                        for (indiceTiro = 0; indiceTiro < tiros.length; indiceTiro ++)
+                        {
+                            if (!tiros [indiceTiro].tiro)
+                            {
+                                tiros [indiceTiro].atirar ();
+                                espera = 0;
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                function colide ()
+                {
+                    for (indiceTiro = 0; indiceTiro < tiros.length; indiceTiro ++)
+                    {
+                        if (tiros [indiceTiro].tiro)
+                        {
+                            for (indiceAstro = 0; indiceAstro < quantidade; indiceAstro ++)
+                            {
+                                if (colisaoTiro (astros [indiceAstro].destinoX + astros [indiceAstro].centro, astros [indiceAstro].destinoY + astros [indiceAstro].centro, astros [indiceAstro].raio, tiros [indiceTiro].posicaoX + tiros [indiceTiro].centroX, tiros [indiceTiro].posicaoY + tiros [indiceTiro].centroY, tiros [indiceTiro].raio))
+                                {
+                                    tiros [indiceTiro].tiro = false;
+                                    explosoes [indiceAstro].destinoX = astros [indiceAstro].destinoX + astros [indiceAstro].centro - explosoes [indiceAstro].centro;
+                                    explosoes [indiceAstro].destinoY = astros [indiceAstro].destinoY + astros [indiceAstro].centro - explosoes [indiceAstro].centro;
+                                    bonus ();
+                                    astros [indiceAstro].reinicio ();
+                                    explosoes [indiceAstro].explosao = true;
+                                    ponto ++;
+                                }
+                            }
+                        }
+                    }
+                    for (indiceAstro = 0; indiceAstro < quantidade; indiceAstro ++)
+                    {
+                        if (colisaoNave (nave.posicao + nave.centroXElipse, nave.centroYElipse, nave.raioXElipse, nave.raioYElipse, astros [indiceAstro].destinoX + astros [indiceAstro].centro, astros [indiceAstro].destinoY + astros [indiceAstro].centro, astros [indiceAstro].raio))
+                        {
+                            explosoes [indiceAstro].destinoX = astros [indiceAstro].destinoX + astros [indiceAstro].centro - explosoes [indiceAstro].centro;
+                            explosoes [indiceAstro].destinoY = astros [indiceAstro].destinoY + astros [indiceAstro].centro - explosoes [indiceAstro].centro;
+                            astros [indiceAstro].reinicio ();
+                            explosoes [indiceAstro].explosao = true;
+                            if (!nave.protecao)
+                            {
+                                vida --;
+                            }
+                            else
+                            {
+                                nave.contagem ++;
+                            }
+                            if (nave.contagem >= 3)
+                            {
+                                nave.protecao = false;
+                            }
+                            if (vida <= 0)
+                            {
+                                fim = true;
+                                return;
+                            }
+                        }
+                    }
+                    for (indiceVida = 0; indiceVida < coracao; indiceVida ++)
+                    {
+                        if (vidas [indiceVida].vida)
+                        {
+                            if (colisaoNave (nave.posicao + nave.centroXElipse, nave.centroYElipse, nave.raioXElipse, nave.raioYElipse, vidas [indiceVida].posicaoX + vidas [indiceVida].centroX, vidas [indiceVida].posicaoY + vidas [indiceVida].centroY, vidas [indiceVida].raio))
+                            {
+                                vidas [indiceVida].vida = false;
+                                vida ++;
+                            }
+                        }
+                    }
+                    for (indiceEscudo = 0; indiceEscudo < circulo; indiceEscudo ++)
+                    {
+                        if (escudos [indiceEscudo].escudo)
+                        {
+                            if (colisaoNave (nave.posicao + nave.centroXElipse, nave.centroYElipse, nave.raioXElipse, nave.raioYElipse, escudos [indiceEscudo].posicaoX + escudos [indiceEscudo].centro, escudos [indiceEscudo].posicaoY + escudos [indiceEscudo].centro, escudos [indiceEscudo].raio))
+                            {
+                                escudos [indiceEscudo].escudo = false;
+                                nave.tempo = 0;
+                                nave.contagem = 0;
+                                nave.protecao = true;
+                            }
+                        }
+                    }
+                }
+                
+                function colisaoTiro (x1, y1, r1, x2, y2, r2) //entre círculos
+                {
+                    var distancia = Math.sqrt (Math.pow (x1 - x2, 2) + Math.pow (y1 - y2, 2));
+                    return distancia <= r1 + r2;
+                }
+                
+                function colisaoNave (x1, y1, rx, ry, x2, y2, r2) //elipse e círculo
+                {
+                    var distancia = Math.sqrt (Math.pow (x1 - x2, 2) + Math.pow (y1 - y2, 2));
+                    var cosseno = (x2 - x1) / (distancia);
+                    var seno = Math.sqrt (1 - Math.pow (cosseno, 2));
+                    var r1 = Math.sqrt (Math.pow (rx * cosseno, 2) + Math.pow (ry * seno, 2));
+                    return distancia <= r1 + r2;
+                }
+                
+                function prepara ()
+                {
+                    for (indiceAstro = 0; indiceAstro < quantidade; indiceAstro ++)
+                    {
+                        astros [indiceAstro].proximo();
+                    }
+                    for (indiceTiro = 0; indiceTiro < tiros.length; indiceTiro ++)
+                    {
+                        if (tiros [indiceTiro].tiro)
+                        {
+                            tiros [indiceTiro].proximo ();
+                        }
+                    }
+                    for (indiceAstro = 0; indiceAstro < quantidade; indiceAstro ++)
+                    {
+                        if (explosoes [indiceAstro].explosao)
+                        {
+                            explosoes [indiceAstro].proximo ();
+                        }
+                    }
+                    for (indiceVida = 0; indiceVida < coracao; indiceVida ++)
+                    {
+                        if (vidas [indiceVida].vida)
+                        {
+                            vidas [indiceVida].proximo ();
+                        }
+                    }
+                    for (indiceEscudo = 0; indiceEscudo < circulo; indiceEscudo ++)
+                    {
+                        if (escudos [indiceEscudo].escudo)
+                        {
+                            escudos [indiceEscudo].proximo ();
+                        }
+                    }
+                }
+                
+                function para ()
+                {
+                    contexto.drawImage (imagemOver, (canvas.width - larguraOver) / 2, (canvas.height - alturaOver) / 2, larguraOver, alturaOver);
+                    explosoes [indiceAstro].desenhar ();
+                    explosoes [indiceAstro].explosao = false;
+                    for (indiceTiro = 0; indiceTiro < tiros.length; indiceTiro ++)
+                    {
+                        tiros [indiceTiro].tiro = false;
+                    }
+                    fundo.reinicio ();
+                    nave.reinicio ();
+                    for (indiceAstro = 0; indiceAstro < quantidade; indiceAstro ++)
+                    {
+                        astros [indiceAstro].reinicio ();
+                    }
+                    espera = 20;
+                    anterior = 0;
+                    quantidade = 1;
+                    coracao = 1;
+                    circulo = 1;
+                    vida = 3;
+                    ponto = 0;
+                    pausa ();
+                }
+                
+                function dificulta ()
+                {
+                    if (anterior == ponto)
+                    {
+                        return false;
+                    }
+                    switch (ponto)
+                    {
+                        case 15:
+                            anterior = ponto;
+                            return true;
+                        case 30:
+                            anterior = ponto;
+                            return true;
+                        case 40:
+                            anterior = ponto;
+                            return true;
+                        case 50:
+                            anterior = ponto;
+                            return true;
+                        case 55:
+                            anterior = ponto;
+                            return true;
+                        case 60:
+                            anterior = ponto;
+                            return true;
+                        case 63:
+                            anterior = ponto;
+                            return true;
+                        case 66:
+                            anterior = ponto;
+                            return true;
+                        case 68:
+                            anterior = ponto;
+                            return true;
+                        case 70:
+                            anterior = ponto;
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+                
+                function bonus ()
+                {
+                    if (Math.random () < .05)
+                    {
+                        if (Math.random () <= 1 / 2)
+                        {
+                            for (indiceVida = 0; indiceVida < coracao; indiceVida ++)
+                            {
+                                if (!vidas [indiceVida].vida)
+                                {
+                                    vidas [indiceVida].posicaoX = astros [indiceAstro].destinoX + astros [indiceAstro].centro - vidas [indiceVida].centroX;
+                                    vidas [indiceVida].posicaoY = astros [indiceAstro].destinoY + astros [indiceAstro].centro - vidas [indiceVida].centroY;
+                                    vidas [indiceVida].vida = true;
+                                    break;
+                                }
+                                else if (indiceVida + 1 == coracao)
+                                {
+                                    vidas [coracao] = new Vida ();
+                                    vidas [coracao].posicaoX = astros [indiceAstro].destinoX + astros [indiceAstro].centro - vidas [coracao].centroX;
+                                    vidas [coracao].posicaoY = astros [indiceAstro].destinoY + astros [indiceAstro].centro - vidas [coracao].centroY;
+                                    vidas [coracao].vida = true;
+                                    coracao ++;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (indiceEscudo = 0; indiceEscudo < circulo; indiceEscudo ++)
+                            {
+                                if (!escudos [indiceEscudo].escudo)
+                                {
+                                    escudos [indiceEscudo].posicaoX = astros [indiceAstro].destinoX + astros [indiceAstro].centro - escudos [indiceEscudo].centro;
+                                    escudos [indiceEscudo].posicaoY = astros [indiceAstro].destinoY + astros [indiceAstro].centro - escudos [indiceEscudo].centro;
+                                    escudos [indiceEscudo].escudo = true;
+                                    break;
+                                }
+                                else if (indiceEscudo + 1 == circulo)
+                                {
+                                    escudos [circulo] = new Escudo ();
+                                    escudos [circulo].posicaoX = astros [indiceAstro].destinoX + astros [indiceAstro].centro - escudos [circulo].centro;
+                                    escudos [circulo].posicaoY = astros [indiceAstro].destinoY + astros [indiceAstro].centro - escudos [circulo].centro;
+                                    escudos [circulo].escudo = true;
+                                    circulo ++;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                function pausa ()
+                {
+                    if (musica.paused)
+                    {
+                        document.getElementById ('botao').innerHTML = ' Pause ';
+                        inicio = true;
+                        fim = false;
+                        musica.play ();
+                        requestAnimationFrame (jogo);
+                    }
+                    else
+                    {
+                        document.getElementById ('botao').innerHTML = ' Play ';
+                        inicio = false;
+                        musica.pause ();
+                    }
+                }
+            </script>
+        </center>
+    </body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title> DESAFIO HTML5 </title>
+   </head>
+   <body>
+   
+      <h1> HTML5 </h1>
+	  <h3> Desenhando no Canvas </h3>
+	  <!--altura 400px--> <!--largura 600px-->
+	  <canvas id="meu_canvas" width="600px" height="400px" 
+	          style="border:1px solid #000000;
+	                 background: #256545"> 
+	  ATENÇÃO SEU NAVEGADOR Ñ SUPORTA HTML 5 CAnvas.
+	  </canvas>
+      <!-- Este é um comenttário java -->
+	  <script>
+	  // comentário javascript
+	     var canvas = document.getElementById("meu_canvas");//nunca esquecer de refere^ciar
+		 var contexto = canvas.getContext("2d")//criando contexto 2d
+		 var fator = 1;
+		 var tam = 0;
+		 var cor = "rgb(0,0,0)";
+		
+				
+		 window.requestAnimationFrame(loopanimacao);
+		 
+		 function loopanimacao(){
+		    contexto.clearRect(0,0,canvas.width,canvas.height);
+			
+			if (tam >= 100) //condicao...
+			fator = -1;
+			
+			
+			else if(tam <= 0)//condicao...
+			fator = 1;
+			tam = tam + 1* fator;
+			
+			if (tam % 10 == 0)
+ 			    cor = (cor == "rgb(0,0,0)" ? "rgb(255,0,0)" : "rgb(0,0,0)" )
+			
+			contexto.fillStyle = cor;
+			
+			contexto.fillRect(/*pos x*/50,/*pos y*/50,/*larg*/ 70+tam, /*art*/100+tam);// retangulo com preenchiumento 
+			
+			window.requestAnimationFrame(loopanimacao);//é qm faz o looping...
+			
+		 }
+	  </script>
+	  
+   </body>
+</html>

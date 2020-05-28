@@ -24,7 +24,7 @@ document.write(typeof(n1));
 n1 = true;
 document.write(typeof(n1));
 */
-
+console.log("Hello");
 var nome = prompt('Informe seu nome');
 var idade = prompt('Informe sua idade');
 

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title> DESAFIO HTML5 </title>
+   </head>
+   <body>
+   
+      <h1> HTML5 </h1>
+	  <h3> Desenhando no Canvas </h3>
+	  <!--altura 400px--> <!--largura 600px-->
+	  <canvas id="meu_canvas" width="700px" height="700px" </canvas>
+	  
+      <!-- Este é um comenttário java -->
+	  <script>
+	  // canvas e contexto
+	  var canvas = document.getElementById('meu_canvas');
+	  var contexto = canvas.getContext('2d');
+	  
+	  var x = 0;
+	  var y = 0;
+	  var texto = "";
+	  contexto.font = "18px Arial";
+	  
+	  //inclui tratamento evento de teclado ao documento HTML
+	  document.addEventListener('keydown',trataKeydown);
+	  
+	  //define o loop da animação
+	  window.requestAnimationFrame(loopAnimacao);
+	  function loopAnimacao(){
+	     contexto.clearRect(0,0,canvas.width, canvas.height);
+		 contexto.fillText("[" + x +"," + y + "]", canvas.width/2 - 80,25);
+		 contexto.fillText(texto,canvas.width/2 + 80, 25);
+		 contexto.fillText(x,y,30,50);
+		 
+		 window.requestAnimationFrame(loopAnimacao);
+	  }
+	  
+	  //regras de tratamento do teclado
+	  function trataKeydown(e){
+	      texto = "Tecla:";
+		  if(e.shiftKey){
+		     texto += "SHIFT";
+		  }
+		    switch(e.keyCode){
+			case 39: //seta para direita
+			x++;
+			break;
+			case 37: // seta para esquerda
+			x--;
+			break;
+			case 38: //seta para cima
+			y--;
+			break;
+			case 40: //seta para baixo
+			y++;
+			break;
+			
+			}
+			texto+= " " + e.keyCode;
+			
+	  }
+	  
+	  </script>
+	  
+   </body>
+</html>
