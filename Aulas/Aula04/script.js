@@ -1,5 +1,13 @@
 // Variáveis do Jogo
 var canvas, ctx, frames, alt, lar = 0, maxPulos = 3, velocidade = 6;
+var estadoAtual;
+//Aula 04
+var estados = {
+	jogar: 0,
+	jogando: 1,
+	perdeu: 2
+
+};
 
 // Objeto Chão
 var chao = {
@@ -30,10 +38,11 @@ var bloco = {
   atualizar: function() {
     this.velocidade += this.gravidade;
     this.y += this.velocidade;
-
-    if(this.y > chao.y - this.alt){
+	//Aula 04
+    if(this.y > chao.y - this.alt && estadoAtual != estados.perdeu){
       this.y = chao.y - this.alt;
       this.pulos = 0;
+	  this.velocidade = 0;
     }
   },
 
@@ -76,12 +85,19 @@ var bloco = {
 			for(var i = 0, tam = this._obs.length; i < tam; i++){
 				var newObs = this._obs[i];
 				newObs.x -= velocidade;
-				if(newObs <= -newObs.largura){
+				//Aula 04
+				if(bloco.x < newObs.x + newObs.largura && bloco.x + bloco.lar >= newObs.x && bloco.y + bloco.alt >= chao.y - newObs.altura){
+					estadoAtual = estados.perdeu;
+				}else if(newObs <= -newObs.largura){
 					this._obs.splice(i, 1);
 					tam--;
 					i--;
 				}
 			}
+		},
+		//Aula 04
+		limpar: function(){
+			this._obs = [];
 		},
 
 		desenhar: function() {
@@ -95,7 +111,16 @@ var bloco = {
 
 // Funções Gerais
 function clique(event){
-  bloco.pular();
+	//Aula 04
+   if(estadoAtual == estados.jogando){
+	bloco.pular();
+   }else if(estadoAtual == estados.jogar){
+    estadoAtual = estados.jogando;
+   }else if(estadoAtual == estados.perdeu && bloco.y >= 2 * alt){
+	estadoAtual = estados.jogar;
+	bloco.velocidade = 0;
+	bloco.y = 0;
+   }
 }
 
 function main(){
@@ -123,7 +148,9 @@ function main(){
   document.body.appendChild(canvas);
 
   document.addEventListener("mousedown", clique);
-
+  
+  //aula 04 
+  estadoAtual = estados.jogar;
   loop();
 }
 
@@ -136,23 +163,30 @@ function loop(){
 
 function update(){
   frames++;
-
+  //Aula 04
   bloco.atualizar();
-  /*
-	Lembrar de Testar no console da página se está invocando o obstáculo;
-	Tbm Explicar que está acumulando obstáculos: obstaculos.length
-	mostra onde um obstáculo está: obstaculos._obs[0]
-  */
-  obstaculos.atualizar();
+  if(estadoAtual == estados.jogando){
+	  obstaculos.atualizar();
+  }else if(estadoAtual == estados.perdeu){
+	obstaculos.limpar();
+  }
 }
 
 function draw(){
   ctx.fillStyle = "#50beff";
   ctx.fillRect(0, 0, lar, alt);
-
+  //Aula 04 
+  if(estadoAtual == estados.jogar){  
+	ctx.fillStyle = "green";
+	ctx.fillRect( lar / 2 - 50, alt / 2 - 50, 100, 100);
+  }else if(estadoAtual == estados.perdeu){
+	ctx.fillStyle = "red";
+	ctx.fillRect( lar / 2 - 50, alt / 2 - 50, 100, 100);
+  }else if(estadoAtual == estados.jogando){
+	obstaculos.desenhar();
+  }
+  
   chao.desenhar();
-	//Lembrar de Testar no console da página se está invocando o obstáculo, setar o X dá função obstaculos.insere como 200;
-  obstaculos.desenhar();
   bloco.desenhar();
 }
 
